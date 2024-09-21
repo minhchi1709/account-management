@@ -1,0 +1,54 @@
+<div *ngIf="loaded else loading">
+  <canvasjs-chart [options]="chartOptions"/>
+
+  <h1 id="current-sum" *ngIf="currentSum">
+    Aktuelle Summe: {{ currentSum.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round(currentSum) * factor) }} VND
+  </h1>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Betrag</th>
+      <th>Zweck</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let i of Array.from(Array(transactions.length).keys())">
+    <tr>
+      <td>{{ app.reformatDate(transactions[i].transaction.date || '') }}</td>
+      <td>{{ transactions[i].transaction.value?.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round((transactions[i]?.transaction.value || 1 ) * factor)) }} VND</td>
+      <td>{{ transactions[i].transaction.description }}</td>
+      <td>
+        <a href="transactions/{{ transactions[i].transaction.id }}?value={{transactions[i].transaction.value}}&description={{transactions[i].transaction.description}}&date={{transactions[i].transaction.date}}">
+          <button class="btn btn-outline-primary">Bearbeiten</button>
+        </a>
+      </td>
+      <td>
+        <button class="btn btn-outline-info" *ngIf="!transactions[i].included else included" (click)="addToSum(i)">
+          Zur Summe berechnen
+        </button>
+        <ng-template #included>
+          <button class="btn btn-outline-danger" (click)="removeFromSum(i)">
+            Aus Summe entfernen
+          </button>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+      <th>Summe</th>
+      <td>{{ sum.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round(sum * factor)) }} VND</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; margin-top: 20%">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>

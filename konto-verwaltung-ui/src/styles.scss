@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.active{
+  border-radius: 5px;
+  background-color: #EBEBEB;
+}
+
+.nav-link:hover {
+  border-radius: 5px;
+  background-color: #EBEBEB;
+}
+
+html, body { height: 100%; }
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

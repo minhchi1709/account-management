@@ -1,0 +1,32 @@
+<div *ngIf="loaded else loading">
+  <canvasjs-chart [options]="chartOptions"/>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Monat</th>
+      <th>Betrag</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let data of datas">
+    <tr>
+      <td>{{ data.label }}</td>
+      <td>{{ data.y.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round(data.y * factor)) }} VND</td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+      <th>Summe</th>
+      <td>{{ summe.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round(summe * factor)) }} VND</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; margin-top: 20%">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>

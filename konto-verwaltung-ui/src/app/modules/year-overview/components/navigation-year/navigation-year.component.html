@@ -1,0 +1,10 @@
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link disabled" aria-disabled="true">Monat auswählen</a>
+  </li>
+  <div *ngFor="let monat of monate">
+    <li class="nav-item">
+      <a class="nav-link" aria-disabled="true" id="{{monat}}" href="years/{{year}}/months/{{monat}}">{{ monat }}</a>
+    </li>
+  </div>
+</ul>
