@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {TransactionService} from "../../services/services/transaction.service";
-import {AppComponent} from "../../app.component";
+import { Component, OnInit} from '@angular/core';
+import {TransactionService} from "../../api-services/services/transaction.service";
 import {CreateTransactionComponent} from "../create-transaction/create-transaction.component";
-import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
 
-import {CurrencyControllerService} from "../../services/services/currency-controller.service";
 import {NgIf} from "@angular/common";
+import {CurrencyService} from "../../api-services/services/currency.service";
+import {GraphComponent} from "../graph/graph.component";
+import {CurrencyManagementService} from "../../services/currency-service/currency-management.service";
+import {ObserverService} from "../../services/observer/observer.service";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @Component({
@@ -13,8 +15,9 @@ import {NgIf} from "@angular/common";
   standalone: true,
   imports: [
     CreateTransactionComponent,
-    CanvasJSAngularChartsModule,
-    NgIf
+    NgIf,
+    GraphComponent,
+    MatProgressSpinnerModule
   ],
   templateUrl: './account-balance.component.html',
   styleUrl: './account-balance.component.scss'
@@ -23,31 +26,44 @@ export class AccountBalanceComponent implements OnInit{
 
   loaded: boolean = false
   balance: number = 0
-  factor: number = 1
-  datas: any[] = []
-  chartOptions:any = {
-    title: {
-      text: "Ausgeben und Einkommen"
-    },
-    data: [{
-      type: "line",
-      dataPoints: [
-        { label: "Start",  y: 0  }
-      ]
-    }]
-  };
+  rate: number = 0
+  dataPoints: any[] = []
+  title: string = ''
+  xTitle: string = ''
+  yTitle: string = ''
 
   constructor(
     private transactionService: TransactionService,
-    protected app: AppComponent,
-    private currencyService: CurrencyControllerService
+    private currencyService: CurrencyService,
+    protected currencyManagementService: CurrencyManagementService,
+    private observer: ObserverService
   ) {
   }
 
   ngOnInit(): void {
-    this.transactionService.getAllTransactions1().subscribe({
-      next: val => this.balance = this.app.sum(val)
+    this.observer.objectUpdate$.subscribe(object => {
+      if (object) {
+        this.init()
+      }
     })
+    this.init()
+    this.title = 'Jährliche Analyse'
+    this.xTitle = 'Jahr'
+    this.yTitle = '€'
+
+
+    this.currencyService.getTodayVibCurrency().subscribe({
+      next: val => {
+        this.rate = val.rate || 0
+        //setTimeout(() => this.loaded = true, 10)
+        this.loaded = true
+      }
+    })
+
+
+  }
+
+  init() {
     this.transactionService.getAllYears().subscribe({
       next: val => {
         for (let y of val.reverse()) {
@@ -55,47 +71,18 @@ export class AccountBalanceComponent implements OnInit{
             year: y
           }).subscribe({
             next: transactions => {
-              this.datas.push({
+              this.dataPoints.push({
                 label: y,
-                y: this.app.sum(transactions)
+                y: this.currencyManagementService.sum(transactions)
               })
             }
           })
         }
       }
     })
-
-    setTimeout(() => {
-      this.chartOptions = {
-        title: {
-          text:  `Jährliches Ausgeben und Einkommen`
-        },
-        animationEnabled: true,
-        axisX: {
-          title: 'Jahr'
-        },
-        axisY: {
-          title: '€'
-        },
-        data: [{
-          type: "line",
-          dataPoints: this.datas
-        }]
-      }
-    }, 100)
-
-    this.currencyService.get({
-      url: 'https://wise.com/vn/currency-converter/eur-to-vnd-rate?amount=1'
+    this.transactionService.getAllTransactions().subscribe({
+      next: val => this.balance = this.currencyManagementService.sum(val)
     })
-      .subscribe({
-        next: res => {
-          this.factor = res.value || 1
-          this.loaded = true
-          console.log(res.value)
-        }
-      })
-
-
   }
 
   protected readonly Math = Math;

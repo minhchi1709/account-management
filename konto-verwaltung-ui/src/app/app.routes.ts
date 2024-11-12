@@ -11,7 +11,7 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/year-overview/year-overview.module').then(m => m.YearOverviewModule)
   },
   {
-    path: 'transactions',
-    loadChildren: () => import('./modules/transaction/transaction.module').then(m => m.TransactionModule)
+    path: 'currency',
+    loadChildren: () => import('./modules/currency/currency.module').then(m => m.CurrencyModule)
   }
 ];

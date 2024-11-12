@@ -1,15 +1,17 @@
 <div *ngIf="loaded else loading">
-  <app-create-transaction/>
   <h1 id="account-balance">
-    Kontostand: {{ balance.toFixed(2) }} € | {{ this.app.numberWithCommas(Math.round(balance * factor)) }} VND
+    Kontostand: {{ currencyManagementService.numberInEUR(balance) }} | {{ this.currencyManagementService.numberInVND(Math.round(balance * rate)) }}
   </h1>
-  <canvasjs-chart [options]="chartOptions"/>
+  <app-graph [setTitle]="title"
+             [setData1]="dataPoints"
+             [setXTitle]="xTitle"
+             [setYTitle]="yTitle"/>
 </div>
 
 <ng-template #loading>
   <div class="d-flex justify-content-center">
-    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; margin-top: 20%">
-      <span class="visually-hidden">Loading...</span>
+    <div role="status" style="width: 3rem; height: 3rem; margin-top: 20%">
+      <mat-spinner></mat-spinner>
     </div>
   </div>
 </ng-template>

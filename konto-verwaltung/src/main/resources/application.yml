@@ -1,4 +1,6 @@
 spring:
+  thymeleaf:
+    prefix: classpath:/static/
   profiles:
     active: dev
   servlet:
@@ -6,6 +8,5 @@ spring:
       max-file-size: 50MB
 springdoc:
   default-produces-media-type: application/json
-server:
-  servlet:
-    context-path: /app/KontoVerwaltung/api/
+
+

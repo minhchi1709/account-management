@@ -1,1 +1,24 @@
+#tool {
+  display: none;
+  position: absolute;
+  top: 0;
+  background-color: #f3cef3;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  transition: right 0.5s ease;
+}
 
+#tool:hover {
+  right: 0
+}
+
+.nav-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  color: black;
+  cursor: pointer;
+}

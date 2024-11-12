@@ -1,26 +1,35 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionService} from "../../services/services/transaction.service";
+import {TransactionService} from "../../api-services/services/transaction.service";
 import {NgForOf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {AppComponent} from "../../app.component";
+import {CreateTransactionComponent} from "../create-transaction/create-transaction.component";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {ObserverService} from "../../services/observer/observer.service";
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
   imports: [
     NgForOf,
-    RouterLink
+    RouterLink,
+    CreateTransactionComponent,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent implements OnInit{
 
-  jahres : number[] = []
+  years : number[] = []
 
   constructor(
     private transactionService: TransactionService,
-    private app: AppComponent
+    private observer: ObserverService
   ) {
   }
 
@@ -28,10 +37,15 @@ export class NavigationComponent implements OnInit{
     this.transactionService.getAllYears()
       .subscribe(
         {
-          next: res => this.jahres = res,
+          next: res => this.years = res,
           error: err => console.log(err),
         }
       )
   }
 
+  reset() {
+    this.observer.detailNotify({
+      type: 'reset'
+    })
+  }
 }

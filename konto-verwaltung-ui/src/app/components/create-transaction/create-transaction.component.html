@@ -1,38 +1,70 @@
 
-<p class="d-inline-flex gap-1">
-  <button class="btn btn-outline-dark"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#transactionCreate"
-          aria-expanded="false"
-          aria-controls="transactionCreate" (click)="createButton()">
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Neue Transaktion hinzufügen:</h1>
+        <button mat-mini-fab
+                type="button"
+                matTooltip="Schließen"
+                class="button-close"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert" *ngIf="msg">
+          {{ msg }}
+        </div>
+        <div class="input-group mb-3">
 
-    <i class="fa-solid fa-caret-up" *ngIf="expanded else notExpanded"></i>
-    <ng-template #notExpanded>
-      <i class="fa-solid fa-caret-down"></i>
-    </ng-template>
-  </button>
-</p>
-<div class="collapse" id="transactionCreate">
-  <div class="card card-body container-sm">
-    <h3>Eine neue Transaktion hinzufügen:</h3>
+          <mat-form-field style="width: 40%">
+            <mat-label>Beschreibung</mat-label>
+            <input type="text" matInput placeholder="Gehalt" [(ngModel)]="tranRequest.description">
+          </mat-form-field>
 
-    <div class="input-group mb-3">
-      <span class="input-group-text" id="description">Beschreibung:</span>
-      <input type="text" class="form-control" placeholder="Beschreibung" aria-label="Description" aria-describedby="description" [(ngModel)]="tranRequest.description">
+          <mat-form-field style="width: 30%">
+            <mat-label>Betrag (€)</mat-label>
+            <input type="number" matInput placeholder="2000 €" [(ngModel)]="tranRequest.value">
+          </mat-form-field>
 
-      <span class="input-group-text" id="value">Betrag (€):</span>
-      <input type="text" class="form-control" placeholder="value" aria-label="value" aria-describedby="value" [(ngModel)]="tranRequest.value">
-
-      <mat-form-field>
-        <mat-label>Datum auswählen</mat-label>
-        <input matInput [matDatepicker]="dp" [formControl]="date" (dateChange)="updateDate($event)">
-        <mat-hint>TT-MM-JJJJ</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp></mat-datepicker>
-      </mat-form-field>
+          <mat-form-field style="width: 30%">
+            <mat-label>Datum auswählen</mat-label>
+            <input matInput [matDatepicker]="dp" [formControl]="date" (dateChange)="updateDate($event)">
+            <mat-hint>TT.MM.JJJJ</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="!editMode else edit">
+        <button type="button"
+                mat-mini-fab
+                matTooltip="Zurücklegen"
+                (click)="reset()">
+          <mat-icon>history</mat-icon>
+        </button>
+        <button type="button"
+                mat-mini-fab
+                matTooltip="Hinzufügen"
+                color="primary"
+                (click)="addTransaction()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <ng-template #edit >
+        <div class="modal-footer">
+          <button type="button"
+                  color="primary"
+                  mat-mini-fab
+                  matTooltip="Aktualisieren"
+                  (click)="update()">
+            <mat-icon>check_circle</mat-icon>
+          </button>
+        </div>
+      </ng-template>
     </div>
-
-    <button type="button" class="btn btn-success" (click)="addTransaction()">Hinzufügen</button>
   </div>
 </div>

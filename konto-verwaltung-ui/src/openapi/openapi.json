@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8088/app/KontoVerwaltung/api",
+      "url": "http://localhost:8088",
       "description": "Local ENV"
     },
     {
@@ -26,7 +26,7 @@
     }
   ],
   "paths": {
-    "/transactions/{id}": {
+    "/app/AccountManagement/api/v1/transactions/transactions/{id}": {
       "get": {
         "tags": [
           "Transaction"
@@ -126,12 +126,12 @@
         }
       }
     },
-    "/": {
+    "/app/AccountManagement/api/v1/transactions": {
       "get": {
         "tags": [
           "Transaction"
         ],
-        "operationId": "getAllTransactions_1",
+        "operationId": "getAllTransactions",
         "responses": {
           "200": {
             "description": "OK",
@@ -152,7 +152,7 @@
         "tags": [
           "Transaction"
         ],
-        "operationId": "createTransaction_1",
+        "operationId": "createTransaction",
         "requestBody": {
           "content": {
             "application/json": {
@@ -177,7 +177,7 @@
         }
       }
     },
-    "/years": {
+    "/app/AccountManagement/api/v1/transactions/years": {
       "get": {
         "tags": [
           "Transaction"
@@ -201,7 +201,7 @@
         }
       }
     },
-    "/years/{year}": {
+    "/app/AccountManagement/api/v1/transactions/years/{year}": {
       "get": {
         "tags": [
           "Transaction"
@@ -235,7 +235,7 @@
         }
       }
     },
-    "/years/{year}/months": {
+    "/app/AccountManagement/api/v1/transactions/years/{year}/months": {
       "get": {
         "tags": [
           "Transaction"
@@ -283,7 +283,7 @@
         }
       }
     },
-    "/years/{year}/months/{month}": {
+    "/app/AccountManagement/api/v1/transactions/years/{year}/months/{month}": {
       "get": {
         "tags": [
           "Transaction"
@@ -326,19 +326,20 @@
         }
       }
     },
-    "/currency": {
+    "/app/AccountManagement/api/v1/transactions/years/{year}/month-total": {
       "get": {
         "tags": [
-          "currency-controller"
+          "Transaction"
         ],
-        "operationId": "get",
+        "operationId": "getAllMonthTotals",
         "parameters": [
           {
-            "name": "url",
-            "in": "query",
+            "name": "year",
+            "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -348,7 +349,96 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MonthTotal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/AccountManagement/api/v1/currency": {
+      "get": {
+        "tags": [
+          "Currency"
+        ],
+        "operationId": "getAllRates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CurrencyRate"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/AccountManagement/api/v1/currency/vib": {
+      "get": {
+        "tags": [
+          "Currency"
+        ],
+        "operationId": "getAllVIBRates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CurrencyRateVIB"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/AccountManagement/api/v1/currency/today": {
+      "get": {
+        "tags": [
+          "Currency"
+        ],
+        "operationId": "getTodayCurrency",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyRate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/app/AccountManagement/api/v1/currency/today/vib": {
+      "get": {
+        "tags": [
+          "Currency"
+        ],
+        "operationId": "getTodayVIBCurrency",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyRateVIB"
                 }
               }
             }
@@ -398,10 +488,53 @@
           }
         }
       },
-      "Response": {
+      "MonthTotal": {
         "type": "object",
         "properties": {
-          "value": {
+          "month": {
+            "type": "string",
+            "enum": [
+              "JANUARY",
+              "FEBRUARY",
+              "MARCH",
+              "APRIL",
+              "MAY",
+              "JUNE",
+              "JULY",
+              "AUGUST",
+              "SEPTEMBER",
+              "OCTOBER",
+              "NOVEMBER",
+              "DECEMBER"
+            ]
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "CurrencyRate": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "rate": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "CurrencyRateVIB": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "rate": {
             "type": "number",
             "format": "float"
           }

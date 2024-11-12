@@ -2,9 +2,9 @@
   <li class="nav-item">
     <a class="nav-link disabled" aria-disabled="true">Monat auswählen</a>
   </li>
-  <div *ngFor="let monat of monate">
+  <div *ngFor="let month of months">
     <li class="nav-item">
-      <a class="nav-link" aria-disabled="true" id="{{monat}}" href="years/{{year}}/months/{{monat}}">{{ monat }}</a>
+      <a class="nav-link" aria-disabled="true" id="{{month}}" href="years/{{year}}/months/{{month}}">{{ dateService.getMonthNameDE(month) }}</a>
     </li>
   </div>
 </ul>

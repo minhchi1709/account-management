@@ -4,8 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.diepgia.mchis.konto_verwaltung.dto.MonthTotal;
 import vn.diepgia.mchis.konto_verwaltung.entities.Transaction;
-import vn.diepgia.mchis.konto_verwaltung.requests.TransactionRequest;
+import vn.diepgia.mchis.konto_verwaltung.dto.TransactionRequest;
 import vn.diepgia.mchis.konto_verwaltung.services.TransactionService;
 
 import java.time.Month;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Transaction")
+@RequestMapping("/app/AccountManagement/api/v1/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -70,6 +72,13 @@ public class TransactionController {
     @GetMapping("/years/{year}/months")
     public ResponseEntity<List<Month>> getAllMonths(@PathVariable Integer year) {
         return ResponseEntity.ok(transactionService.getAllMonths(year));
+    }
+
+    @GetMapping("/years/{year}/month-total")
+    public ResponseEntity<List<MonthTotal>> getAllMonthTotals(
+            @PathVariable Integer year
+    ) {
+        return ResponseEntity.ok(transactionService.getAllMonthTotal(year));
     }
 
     @GetMapping("/years/{year}/months/{month}")

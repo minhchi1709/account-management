@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {CreateTransactionComponent} from "./components/create-transaction/create-transaction.component";
-import {HttpClientModule} from "@angular/common/http";
+import * as _moment from 'moment';
+import {default as _rollupMoment} from "moment/moment";
 import {NavigationComponent} from "./components/navigation/navigation.component";
-import {Transaction} from "./services/models/transaction";
+import {Transaction} from "./api-services/models/transaction";
 
+const moment = _rollupMoment || _moment;
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,21 +16,6 @@ import {Transaction} from "./services/models/transaction";
 })
 export class AppComponent {
   title = 'konto-verwaltung-ui';
-  public monateDict: any =
-    {
-      'January': 1,
-      'February': 2,
-      'March': 3,
-      'April': 4,
-      'May': 5,
-      'June': 6,
-      'July': 7,
-      'August': 8,
-      'September': 9,
-      'October': 10,
-      'November': 11,
-      'December': 12,
-    }
 
   public sum(transactions: Transaction[]): number {
     let sum = 0;
@@ -45,5 +32,65 @@ export class AppComponent {
 
   public numberWithCommas(x: number):string {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  constructor() {
+    moment.updateLocale('de', {
+      months: [
+        'Januar',
+        'Februar',
+        'Marsch',
+        'April',
+        'Mai',
+        'Juni',
+        'Juli',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember',
+      ],
+      monthsShort: [
+        'Januar',
+        'Februar',
+        'Marsch',
+        'April',
+        'Mai',
+        'Juni',
+        'Juli',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember',
+      ],
+      weekdays: [
+        'Chủ nhật',
+        'Thứ 2',
+        'Thứ 3',
+        'Thứ 4',
+        'Thứ 5',
+        'Thứ 6',
+        'Thứ 7'
+      ],
+      weekdaysShort: [
+        'Chủ nhật',
+        'Thứ 2',
+        'Thứ 3',
+        'Thứ 4',
+        'Thứ 5',
+        'Thứ 6',
+        'Thứ 7'
+      ],
+      weekdaysMin: [
+        'So',
+        'Mo',
+        'Di',
+        'Mi',
+        'Do',
+        'Fr',
+        'Sa'
+      ]
+    })
   }
 }

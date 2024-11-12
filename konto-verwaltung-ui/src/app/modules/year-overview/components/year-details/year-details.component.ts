@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
-import {TransactionService} from "../../../../services/services/transaction.service";
+import {TransactionService} from "../../../../api-services/services/transaction.service";
 import {ActivatedRoute} from "@angular/router";
-import {AppComponent} from "../../../../app.component";
 import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
-import {CurrencyControllerService} from "../../../../services/services/currency-controller.service";
+import {CurrencyService} from "../../../../api-services/services/currency.service";
+import {CurrencyManagementService} from "../../../../services/currency-service/currency-management.service";
+import {GraphComponent} from "../../../../components/graph/graph.component";
+import {DateService} from "../../../../services/date-service/date.service";
+import {ObserverService} from "../../../../services/observer/observer.service";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-year-details',
@@ -12,7 +16,9 @@ import {CurrencyControllerService} from "../../../../services/services/currency-
   imports: [
     NgForOf,
     CanvasJSAngularChartsModule,
-    NgIf
+    NgIf,
+    GraphComponent,
+    MatProgressSpinnerModule
   ],
   templateUrl: './year-details.component.html',
   styleUrl: './year-details.component.scss'
@@ -20,88 +26,70 @@ import {CurrencyControllerService} from "../../../../services/services/currency-
 export class YearDetailsComponent implements OnInit{
 
   loaded: boolean = false
-  factor: number = 1
+  rate: number = 1
   monate: string[] = []
   year: number = 0
   summe: number = 0
-  datas: any[] = []
-  chartOptions:any = {
-    title: {
-      text: "Monatliches Ausgeben und Einkommen"
-    },
-    data: [{
-      type: "line",
-      dataPoints: [
-        { label: "Start",  y: 0  }
-      ]
-    }]
-  };
+  dataPoints: any[] = []
+  title: string = ''
+  xTitle: string = ''
+  yTitle: string = ''
 
   constructor(
     private transactionService: TransactionService,
     private router: ActivatedRoute,
-    protected app: AppComponent,
-    private currencyService: CurrencyControllerService,
+    private currencyService: CurrencyService,
+    protected currencyManagementService: CurrencyManagementService,
+    protected dateSerivce: DateService,
+    private observer: ObserverService
   ) {
   }
 
   ngOnInit(): void {
     this.year = this.router.snapshot.params['year'];
+    this.init()
+    this.observer.objectUpdate$.subscribe(object => {
+      if (object) {
+        this.init()
+      }
+    })
+    this.title = 'Monatliche Analyse'
+    this.xTitle = 'Monat'
+    this.yTitle = '€'
+    this.currencyService.getTodayVibCurrency().subscribe({
+      next: val => {
+        this.rate = val.rate || 0
+      }
+    })
+  }
+
+  init() {
     this.transactionService.getAllMonths({
       year: this.year
     }).subscribe({
       next: res => {
-        this.monate = res.map(val => this.capitalize(val))
-
-        for (let i = 0 ; i < this.monate.length ; i++) {
-          const monat = this.monate[i]
-          this.transactionService.getAllTransactionsOfMonth({
-            year: this.year,
-            month: this.app.monateDict[monat]
-          }).subscribe({
-            next: res => {
-              let temp = this.app.sum(res)
-              this.datas.push({
-                label: monat,
-                y: temp
-              })
-              this.summe += temp
-            }
-          })
-        }
-
-        setTimeout(() => {
-          this.chartOptions = {
-            title: {
-              text: "Monatliches Ausgeben und Einkommen"
-            },
-            animationEnabled: true,
-            axisX: {
-              title: 'Monat'
-            },
-            axisY: {
-              title: '€'
-            },
-            data: [{
-              type: "line",
-              dataPoints: this.datas
-            }]
+        this.transactionService.getAllMonthTotals({
+          year: this.year
+        }).subscribe({
+          next: value => {
+            this.summe = 0
+            this.dataPoints = value.map((mt) => {
+              return {
+                label: this.dateSerivce.getMonthNameDE(this.capitalize(mt.month || '')),
+                y: mt.total
+              }
+            })
+            this.monate = value.map(mt => this.capitalize(mt.month || ''))
+            value.map(mt => {
+              return mt.total
+            }).forEach(t => this.summe+= t || 0)
+            this.loaded = true
           }
-        }, 100)
-
-        this.currencyService.get({
-          url: 'https://wise.com/vn/currency-converter/eur-to-vnd-rate?amount=1'
         })
-          .subscribe({
-            next: res => {
-              this.factor = res.value || 1
-              this.loaded = true
-            }
-          })
-      },
-      error: err => console.log(err)
-    })
 
+        //setTimeout(() => this.loaded = true, 200)
+      }
+    })
   }
 
   private capitalize(input: string):string {

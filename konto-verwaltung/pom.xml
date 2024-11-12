@@ -12,7 +12,7 @@
 	<artifactId>konto-verwaltung</artifactId>
 	<version>0.0.1</version>
 	<name>konto-verwaltung</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Account Management Application</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -31,10 +31,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>

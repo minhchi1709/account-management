@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		servers = {
 				@Server(
 						description = "Local ENV",
-						url = "http://localhost:8088/app/KontoVerwaltung/api"
+						url = "http://localhost:8088"
 				),
 				@Server(
 						description = "PROD ENV",

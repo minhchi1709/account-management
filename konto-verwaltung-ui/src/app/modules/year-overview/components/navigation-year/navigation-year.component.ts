@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {TransactionService} from "../../../../services/services/transaction.service";
+import {TransactionService} from "../../../../api-services/services/transaction.service";
 import {ActivatedRoute} from "@angular/router";
+import {DateService} from "../../../../services/date-service/date.service";
 
 @Component({
   selector: 'app-navigation-year',
@@ -14,12 +15,13 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class NavigationYearComponent implements OnInit {
 
-  monate: string[] = []
+  months: string[] = []
   year: number = 0
 
   constructor(
     private transactionService: TransactionService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    protected dateService: DateService
   ) {
   }
 
@@ -29,7 +31,7 @@ export class NavigationYearComponent implements OnInit {
       year: this.year
     }).subscribe({
       next: res => {
-        this.monate = res.map(val => this.capitalize(val))
+        this.months = res.map(val => this.capitalize(val))
       },
       error: err => console.log(err)
     })

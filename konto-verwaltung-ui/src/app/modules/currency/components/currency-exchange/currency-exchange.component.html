@@ -1,0 +1,17 @@
+<div *ngIf="loaded else loading">
+  <app-graph [setTitle]="title"
+             [setData1]="filteredVIBDataPoints"
+             [setData2]="filteredPaypalDataPoints"
+             [setXTitle]="xTitle"
+             (filteringEvent)="filter($event)"
+             [setCurrency]="true"
+             [setYTitle]="yTitle"/>
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <div role="status" style="width: 3rem; height: 3rem; margin-top: 20%">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+</ng-template>
