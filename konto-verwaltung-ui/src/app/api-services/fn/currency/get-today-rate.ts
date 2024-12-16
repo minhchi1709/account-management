@@ -6,14 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CurrencyRateVib } from '../../models/currency-rate-vib';
+import { CurrencyExchangeRate } from '../../models/currency-exchange-rate';
 
-export interface GetTodayVibCurrency$Params {
+export interface GetTodayRate$Params {
+  bank: string;
 }
 
-export function getTodayVibCurrency(http: HttpClient, rootUrl: string, params?: GetTodayVibCurrency$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrencyRateVib>> {
-  const rb = new RequestBuilder(rootUrl, getTodayVibCurrency.PATH, 'get');
+export function getTodayRate(http: HttpClient, rootUrl: string, params: GetTodayRate$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrencyExchangeRate>> {
+  const rb = new RequestBuilder(rootUrl, getTodayRate.PATH, 'get');
   if (params) {
+    rb.query('bank', params.bank, {});
   }
 
   return http.request(
@@ -21,9 +23,9 @@ export function getTodayVibCurrency(http: HttpClient, rootUrl: string, params?: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<CurrencyRateVib>;
+      return r as StrictHttpResponse<CurrencyExchangeRate>;
     })
   );
 }
 
-getTodayVibCurrency.PATH = '/app/AccountManagement/api/v1/currency/today/vib';
+getTodayRate.PATH = '/app/AccountManagement/api/v1/currency/today';

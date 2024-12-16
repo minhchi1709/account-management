@@ -4,7 +4,20 @@
   </li>
   <div *ngFor="let month of months">
     <li class="nav-item">
-      <a class="nav-link" aria-disabled="true" id="{{month}}" href="years/{{year}}/months/{{month}}">{{ dateService.getMonthNameDE(month) }}</a>
+      <div class="box">
+        <a class="nav-link nav-nav" id="{{month}}" href="years/{{year}}/months/{{month}}">
+          {{ dateService.getMonthNameDE(month) }}
+        </a>
+        <div class="space">
+          <span style="--i: 31" class="star"></span>
+          <span style="--i: 12" class="star"></span>
+          <span style="--i: 57" class="star"></span>
+          <span style="--i: 93" class="star"></span>
+          <span style="--i: 23" class="star"></span>
+          <span style="--i: 70" class="star"></span>
+          <span style="--i: 6" class="star"></span>
+        </div>
+      </div>
     </li>
   </div>
 </ul>

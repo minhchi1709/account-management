@@ -28,18 +28,12 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllTransactionsOfMonth(int year, int month) {
-        return getAllTransactions().stream().filter(t -> {
-            return (t.getDate().isAfter(LocalDate.of(year, month, 1)) ||
-                    t.getDate().isEqual(LocalDate.of(year, month, 1)))
-                    && t.getDate().isBefore(LocalDate.of(year, month + 1, 1));
-        }).sorted(transactionSorter).toList();
+        return getAllTransactions().stream().filter(t ->
+                t.getDate().getMonthValue() == month && t.getDate().getYear() == year).sorted(transactionSorter).toList();
     }
 
     public List<Transaction> getAllTransactionsOfYear(int year) {
-        return getAllTransactions().stream().filter(t -> {
-            return (t.getDate().isAfter(LocalDate.of(year, 1, 1)) || t.getDate().isEqual(LocalDate.of(year, 1, 1)))
-                    && t.getDate().isBefore(LocalDate.of(year + 1, 1, 1));
-        }).sorted(transactionSorter).toList();
+        return getAllTransactions().stream().filter(t -> t.getDate().getYear() == year).sorted(transactionSorter).toList();
     }
 
     public Transaction createTransaction(TransactionRequest transaction) {

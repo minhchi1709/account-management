@@ -3,6 +3,8 @@ import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
 import {NgIf} from "@angular/common";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {CurrencyManagementService} from "../../services/currency-service/currency-management.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-graph',
@@ -12,6 +14,7 @@ import {MatSelectModule} from "@angular/material/select";
     NgIf,
     MatFormFieldModule,
     MatSelectModule,
+    FormsModule,
   ],
   templateUrl: './graph.component.html',
   styleUrl: './graph.component.scss'
@@ -22,8 +25,12 @@ export class GraphComponent implements OnInit, OnChanges {
   xTitle: string = ''
   title: string = ''
   currency: boolean = false
-  dataPoints1: any[] = []
-  dataPoints2: any[] = []
+  vibDataPoints: any[] = []
+  vcbDataPoints: any[] = []
+  paypalDataPoints: any[] = []
+  input: string = ''
+  rate: number = 0
+  result: number = 0
   @Output() filteringEvent = new EventEmitter<string>()
   chartOptions:any = {
     title: {
@@ -37,10 +44,19 @@ export class GraphComponent implements OnInit, OnChanges {
     }]
   }
 
+  constructor(
+    protected service: CurrencyManagementService
+  ) {
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.ngOnInit()
   }
   ngOnInit(): void {
+    if (this.currency) {
+      this.rate = this.vcbDataPoints[this.vcbDataPoints.length - 1].y
+      this.result = this.rate
+    }
     this.chartOptions = {
       title: {
         text: this.title,
@@ -61,17 +77,24 @@ export class GraphComponent implements OnInit, OnChanges {
       },
       data: [
         {
-          type: "line",
+          type: "spline",
           name: "VIB Rate",
           showInLegend: true,
-          dataPoints: this.dataPoints1,
+          dataPoints: this.vibDataPoints,
           fontFamily: "sans-serif"
         },
         {
-          type: "line",
+          type: "spline",
+          name: "VCB Rate",
+          showInLegend: true,
+          dataPoints: this.vcbDataPoints,
+          fontFamily: "sans-serif"
+        },
+        {
+          type: "spline",
           name: 'Paypal Rate',
           showInLegend: true,
-          dataPoints: this.dataPoints2,
+          dataPoints: this.paypalDataPoints,
           fontFamily: "sans-serif"
         }
       ]
@@ -88,13 +111,19 @@ export class GraphComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  set setData1(data: any[]) {
-    this.dataPoints1 = data
+  set setVIB(data: any[]) {
+    this.vibDataPoints = data
+    console.log(data)
   }
 
   @Input()
-  set setData2(data: any[]) {
-    this.dataPoints2 = data
+  set setVCB(data: any[]) {
+    this.vcbDataPoints = data
+  }
+
+  @Input()
+  set setPaypal(data: any[]) {
+    this.paypalDataPoints = data
   }
 
   @Input()
@@ -110,5 +139,18 @@ export class GraphComponent implements OnInit, OnChanges {
   @Input()
   set setCurrency(currency: boolean) {
     this.currency = currency
+  }
+
+  calculate() {
+    try {
+      const input = Number(this.input)
+      if (input) {
+        this.result = input * this.rate
+      } else {
+        this.result = this.rate
+      }
+    } catch (error) {
+      this.result = this.rate
+    }
   }
 }

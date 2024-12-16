@@ -1,21 +1,22 @@
 package vn.diepgia.mchis.konto_verwaltung.entities;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class CurrencyRate {
-    @Id
-    private LocalDate date;
+public class CurrencyExchangeRate {
+    @EmbeddedId
+    private CurrencyExchangeRateId id;
     private float rate;
+    private LocalDateTime lastUpdated;
 }

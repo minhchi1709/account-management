@@ -6,12 +6,12 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CurrencyRate } from '../../models/currency-rate';
+import { Rates } from '../../models/rates';
 
 export interface GetAllRates$Params {
 }
 
-export function getAllRates(http: HttpClient, rootUrl: string, params?: GetAllRates$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CurrencyRate>>> {
+export function getAllRates(http: HttpClient, rootUrl: string, params?: GetAllRates$Params, context?: HttpContext): Observable<StrictHttpResponse<Rates>> {
   const rb = new RequestBuilder(rootUrl, getAllRates.PATH, 'get');
   if (params) {
   }
@@ -21,7 +21,7 @@ export function getAllRates(http: HttpClient, rootUrl: string, params?: GetAllRa
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<CurrencyRate>>;
+      return r as StrictHttpResponse<Rates>;
     })
   );
 }

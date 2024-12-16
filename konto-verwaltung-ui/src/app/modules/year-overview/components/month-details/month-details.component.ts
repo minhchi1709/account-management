@@ -9,8 +9,7 @@ import {GraphComponent} from "../../../../components/graph/graph.component";
 import {ObserverService} from "../../../../services/observer/observer.service";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {Transaction} from "../../../../api-services/models/transaction";
+import {LoaderComponent} from "../../../../components/loader/loader.component";
 
 
 @Component({
@@ -23,7 +22,7 @@ import {Transaction} from "../../../../api-services/models/transaction";
     GraphComponent,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    LoaderComponent
   ],
   templateUrl: './month-details.component.html',
   styleUrl: './month-details.component.scss'
@@ -64,7 +63,9 @@ export class MonthDetailsComponent implements OnInit, OnChanges {
         this.init()
       }
     })
-    this.currencyService.getTodayVibCurrency().subscribe({
+    this.currencyService.getTodayRate({
+      bank: 'vib'
+    }).subscribe({
       next: val => {
         this.rate = val.rate || 0
       }

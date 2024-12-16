@@ -13,5 +13,9 @@ export const routes: Routes = [
   {
     path: 'currency',
     loadChildren: () => import('./modules/currency/currency.module').then(m => m.CurrencyModule)
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];

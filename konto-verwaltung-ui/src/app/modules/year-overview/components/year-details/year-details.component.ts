@@ -8,7 +8,7 @@ import {CurrencyManagementService} from "../../../../services/currency-service/c
 import {GraphComponent} from "../../../../components/graph/graph.component";
 import {DateService} from "../../../../services/date-service/date.service";
 import {ObserverService} from "../../../../services/observer/observer.service";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {LoaderComponent} from "../../../../components/loader/loader.component";
 
 @Component({
   selector: 'app-year-details',
@@ -18,7 +18,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CanvasJSAngularChartsModule,
     NgIf,
     GraphComponent,
-    MatProgressSpinnerModule
+    LoaderComponent
   ],
   templateUrl: './year-details.component.html',
   styleUrl: './year-details.component.scss'
@@ -27,9 +27,9 @@ export class YearDetailsComponent implements OnInit{
 
   loaded: boolean = false
   rate: number = 1
-  monate: string[] = []
+  months: string[] = []
   year: number = 0
-  summe: number = 0
+  sum: number = 0
   dataPoints: any[] = []
   title: string = ''
   xTitle: string = ''
@@ -40,7 +40,7 @@ export class YearDetailsComponent implements OnInit{
     private router: ActivatedRoute,
     private currencyService: CurrencyService,
     protected currencyManagementService: CurrencyManagementService,
-    protected dateSerivce: DateService,
+    protected dateService: DateService,
     private observer: ObserverService
   ) {
   }
@@ -56,7 +56,9 @@ export class YearDetailsComponent implements OnInit{
     this.title = 'Monatliche Analyse'
     this.xTitle = 'Monat'
     this.yTitle = '€'
-    this.currencyService.getTodayVibCurrency().subscribe({
+    this.currencyService.getTodayRate({
+      bank: 'vib'
+    }).subscribe({
       next: val => {
         this.rate = val.rate || 0
       }
@@ -64,30 +66,22 @@ export class YearDetailsComponent implements OnInit{
   }
 
   init() {
-    this.transactionService.getAllMonths({
+    this.transactionService.getAllMonthTotals({
       year: this.year
     }).subscribe({
-      next: res => {
-        this.transactionService.getAllMonthTotals({
-          year: this.year
-        }).subscribe({
-          next: value => {
-            this.summe = 0
-            this.dataPoints = value.map((mt) => {
-              return {
-                label: this.dateSerivce.getMonthNameDE(this.capitalize(mt.month || '')),
-                y: mt.total
-              }
-            })
-            this.monate = value.map(mt => this.capitalize(mt.month || ''))
-            value.map(mt => {
-              return mt.total
-            }).forEach(t => this.summe+= t || 0)
-            this.loaded = true
+      next: value => {
+        this.sum = 0
+        this.dataPoints = value.map((mt) => {
+          return {
+            label: this.dateService.getMonthNameDE(this.capitalize(mt.month || '')),
+            y: mt.total
           }
         })
-
-        //setTimeout(() => this.loaded = true, 200)
+        this.months = value.map(mt => this.capitalize(mt.month || ''))
+        value.map(mt => {
+          return mt.total
+        }).forEach(t => this.sum+= t || 0)
+        this.loaded = true
       }
     })
   }

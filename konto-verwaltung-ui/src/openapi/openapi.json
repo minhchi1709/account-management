@@ -372,33 +372,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CurrencyRate"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/app/AccountManagement/api/v1/currency/vib": {
-      "get": {
-        "tags": [
-          "Currency"
-        ],
-        "operationId": "getAllVIBRates",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CurrencyRateVIB"
-                  }
+                  "$ref": "#/components/schemas/Rates"
                 }
               }
             }
@@ -411,34 +385,24 @@
         "tags": [
           "Currency"
         ],
-        "operationId": "getTodayCurrency",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrencyRate"
-                }
-              }
+        "operationId": "getTodayRate",
+        "parameters": [
+          {
+            "name": "bank",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        }
-      }
-    },
-    "/app/AccountManagement/api/v1/currency/today/vib": {
-      "get": {
-        "tags": [
-          "Currency"
         ],
-        "operationId": "getTodayVIBCurrency",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CurrencyRateVIB"
+                  "$ref": "#/components/schemas/CurrencyExchangeRate"
                 }
               }
             }
@@ -514,12 +478,11 @@
           }
         }
       },
-      "CurrencyRate": {
+      "CurrencyExchangeRate": {
         "type": "object",
         "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
+          "id": {
+            "$ref": "#/components/schemas/CurrencyExchangeRateId"
           },
           "rate": {
             "type": "number",
@@ -527,16 +490,43 @@
           }
         }
       },
-      "CurrencyRateVIB": {
+      "CurrencyExchangeRateId": {
         "type": "object",
         "properties": {
+          "bank": {
+            "type": "string",
+            "enum": [
+              "VIB",
+              "VCB",
+              "PAYPAL"
+            ]
+          },
           "date": {
             "type": "string",
             "format": "date"
+          }
+        }
+      },
+      "Rates": {
+        "type": "object",
+        "properties": {
+          "paypalRates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrencyExchangeRate"
+            }
           },
-          "rate": {
-            "type": "number",
-            "format": "float"
+          "vibRates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrencyExchangeRate"
+            }
+          },
+          "vcbRates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrencyExchangeRate"
+            }
           }
         }
       }

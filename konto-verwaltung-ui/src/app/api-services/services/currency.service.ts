@@ -9,16 +9,12 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { CurrencyRate } from '../models/currency-rate';
-import { CurrencyRateVib } from '../models/currency-rate-vib';
+import { CurrencyExchangeRate } from '../models/currency-exchange-rate';
 import { getAllRates } from '../fn/currency/get-all-rates';
 import { GetAllRates$Params } from '../fn/currency/get-all-rates';
-import { getAllVibRates } from '../fn/currency/get-all-vib-rates';
-import { GetAllVibRates$Params } from '../fn/currency/get-all-vib-rates';
-import { getTodayCurrency } from '../fn/currency/get-today-currency';
-import { GetTodayCurrency$Params } from '../fn/currency/get-today-currency';
-import { getTodayVibCurrency } from '../fn/currency/get-today-vib-currency';
-import { GetTodayVibCurrency$Params } from '../fn/currency/get-today-vib-currency';
+import { getTodayRate } from '../fn/currency/get-today-rate';
+import { GetTodayRate$Params } from '../fn/currency/get-today-rate';
+import { Rates } from '../models/rates';
 
 @Injectable({ providedIn: 'root' })
 export class CurrencyService extends BaseService {
@@ -35,7 +31,7 @@ export class CurrencyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllRates$Response(params?: GetAllRates$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CurrencyRate>>> {
+  getAllRates$Response(params?: GetAllRates$Params, context?: HttpContext): Observable<StrictHttpResponse<Rates>> {
     return getAllRates(this.http, this.rootUrl, params, context);
   }
 
@@ -45,84 +41,34 @@ export class CurrencyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllRates(params?: GetAllRates$Params, context?: HttpContext): Observable<Array<CurrencyRate>> {
+  getAllRates(params?: GetAllRates$Params, context?: HttpContext): Observable<Rates> {
     return this.getAllRates$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<CurrencyRate>>): Array<CurrencyRate> => r.body)
+      map((r: StrictHttpResponse<Rates>): Rates => r.body)
     );
   }
 
-  /** Path part for operation `getAllVibRates()` */
-  static readonly GetAllVibRatesPath = '/app/AccountManagement/api/v1/currency/vib';
+  /** Path part for operation `getTodayRate()` */
+  static readonly GetTodayRatePath = '/app/AccountManagement/api/v1/currency/today';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getAllVibRates()` instead.
+   * To access only the response body, use `getTodayRate()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getAllVibRates$Response(params?: GetAllVibRates$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CurrencyRateVib>>> {
-    return getAllVibRates(this.http, this.rootUrl, params, context);
+  getTodayRate$Response(params: GetTodayRate$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrencyExchangeRate>> {
+    return getTodayRate(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getAllVibRates$Response()` instead.
+   * To access the full response (for headers, for example), `getTodayRate$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getAllVibRates(params?: GetAllVibRates$Params, context?: HttpContext): Observable<Array<CurrencyRateVib>> {
-    return this.getAllVibRates$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<CurrencyRateVib>>): Array<CurrencyRateVib> => r.body)
-    );
-  }
-
-  /** Path part for operation `getTodayCurrency()` */
-  static readonly GetTodayCurrencyPath = '/app/AccountManagement/api/v1/currency/today';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getTodayCurrency()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getTodayCurrency$Response(params?: GetTodayCurrency$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrencyRate>> {
-    return getTodayCurrency(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getTodayCurrency$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getTodayCurrency(params?: GetTodayCurrency$Params, context?: HttpContext): Observable<CurrencyRate> {
-    return this.getTodayCurrency$Response(params, context).pipe(
-      map((r: StrictHttpResponse<CurrencyRate>): CurrencyRate => r.body)
-    );
-  }
-
-  /** Path part for operation `getTodayVibCurrency()` */
-  static readonly GetTodayVibCurrencyPath = '/app/AccountManagement/api/v1/currency/today/vib';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getTodayVibCurrency()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getTodayVibCurrency$Response(params?: GetTodayVibCurrency$Params, context?: HttpContext): Observable<StrictHttpResponse<CurrencyRateVib>> {
-    return getTodayVibCurrency(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getTodayVibCurrency$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getTodayVibCurrency(params?: GetTodayVibCurrency$Params, context?: HttpContext): Observable<CurrencyRateVib> {
-    return this.getTodayVibCurrency$Response(params, context).pipe(
-      map((r: StrictHttpResponse<CurrencyRateVib>): CurrencyRateVib => r.body)
+  getTodayRate(params: GetTodayRate$Params, context?: HttpContext): Observable<CurrencyExchangeRate> {
+    return this.getTodayRate$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CurrencyExchangeRate>): CurrencyExchangeRate => r.body)
     );
   }
 

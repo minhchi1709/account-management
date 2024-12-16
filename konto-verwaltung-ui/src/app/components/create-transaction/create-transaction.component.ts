@@ -93,7 +93,8 @@ export class CreateTransactionComponent implements OnInit{
   }
 
   reset() {
-    this.date.reset()
+    const now = new Date()
+    this.date.setValue(moment([now.getFullYear(), now.getMonth(), now.getDate()]))
     this.msg = ''
     this.tranRequest = {value: 0, description: '', date: ''}
   }

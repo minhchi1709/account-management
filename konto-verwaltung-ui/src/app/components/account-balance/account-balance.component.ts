@@ -7,7 +7,8 @@ import {CurrencyService} from "../../api-services/services/currency.service";
 import {GraphComponent} from "../graph/graph.component";
 import {CurrencyManagementService} from "../../services/currency-service/currency-management.service";
 import {ObserverService} from "../../services/observer/observer.service";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {LoaderComponent} from "../loader/loader.component";
+import {firstValueFrom} from "rxjs";
 
 
 @Component({
@@ -17,7 +18,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CreateTransactionComponent,
     NgIf,
     GraphComponent,
-    MatProgressSpinnerModule
+    LoaderComponent
   ],
   templateUrl: './account-balance.component.html',
   styleUrl: './account-balance.component.scss'
@@ -51,16 +52,15 @@ export class AccountBalanceComponent implements OnInit{
     this.xTitle = 'Jahr'
     this.yTitle = '€'
 
-
-    this.currencyService.getTodayVibCurrency().subscribe({
+    this.currencyService.getTodayRate({
+      bank: 'vib'
+    }).subscribe({
       next: val => {
         this.rate = val.rate || 0
         //setTimeout(() => this.loaded = true, 10)
         this.loaded = true
       }
     })
-
-
   }
 
   init() {
@@ -80,6 +80,7 @@ export class AccountBalanceComponent implements OnInit{
         }
       }
     })
+    console.log(this.dataPoints)
     this.transactionService.getAllTransactions().subscribe({
       next: val => this.balance = this.currencyManagementService.sum(val)
     })

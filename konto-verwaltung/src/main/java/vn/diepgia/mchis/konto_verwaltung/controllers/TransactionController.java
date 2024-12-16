@@ -9,8 +9,11 @@ import vn.diepgia.mchis.konto_verwaltung.entities.Transaction;
 import vn.diepgia.mchis.konto_verwaltung.dto.TransactionRequest;
 import vn.diepgia.mchis.konto_verwaltung.services.TransactionService;
 
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final Logger LOGGER = Logger.getLogger(TransactionController.class.getName());
 
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions() {
@@ -27,6 +31,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionRequest transaction) {
+        LOGGER.info(String.format("Create new transaction(%s; %s €; %s)", LocalDate.parse(transaction.getDate()).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")), String.valueOf(transaction.getValue()).replace('.', ','), transaction.getDescription()));
         return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
 

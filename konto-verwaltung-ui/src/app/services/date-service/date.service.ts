@@ -64,6 +64,7 @@ export class DateService {
   }
 
   public getDate(option: string): Date | null {
+
     const now = new Date()
     switch (option) {
       case 'week': {
