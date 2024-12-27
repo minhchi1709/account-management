@@ -80,7 +80,6 @@ export class AccountBalanceComponent implements OnInit{
         }
       }
     })
-    console.log(this.dataPoints)
     this.transactionService.getAllTransactions().subscribe({
       next: val => this.balance = this.currencyManagementService.sum(val)
     })

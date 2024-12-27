@@ -99,6 +99,7 @@ export class GraphComponent implements OnInit, OnChanges {
         }
       ]
     }
+    console.log(this.chartOptions)
   }
 
   filter(value: string) {
@@ -113,7 +114,6 @@ export class GraphComponent implements OnInit, OnChanges {
   @Input()
   set setVIB(data: any[]) {
     this.vibDataPoints = data
-    console.log(data)
   }
 
   @Input()

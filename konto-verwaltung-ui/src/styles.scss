@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import "@fortawesome/fontawesome-free/css/all.min.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
 
 /* From Uiverse.io by tarantino421 */
@@ -79,3 +78,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding: calc(var(--bs-modal-header-padding-y) * 0.5) calc(var(--bs-modal-header-padding-x) * 0.5);
   margin: calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x)) calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

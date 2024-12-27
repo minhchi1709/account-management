@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --open",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "gen-api": "ng-openapi-gen --input ./src/openapi/openapi.json --output ./src/app/api-services"
+    "gen-api": "ng-openapi-gen --input ./src/openapi/openapi.json --output ./src/app/api-services",
+    "deploy": "ng build --configuration=production && move \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung-ui\\dist\\konto-verwaltung-ui\\browser\" \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung\\src\\main\\resources\" && rmdir /s /q \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung\\src\\main\\resources\\static\" && ren \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung\\src\\main\\resources\\browser\" \"static\" && copy \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung\\src\\main\\resources\\static\\index.html\" \"C:\\Users\\diepm\\OneDrive\\Desktop\\git\\account-management\\konto-verwaltung\\src\\main\\resources\\static\\404.html\""
   },
   "private": true,
   "dependencies": {
@@ -18,15 +19,13 @@
     "@angular/core": "^17.3.0",
     "@angular/forms": "^17.3.0",
     "@angular/material": "^17.3.10",
-    "@angular/material-moment-adapter": "^18.2.4",
+    "@angular/material-moment-adapter": "^17.3.10",
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "@canvasjs/angular-charts": "^1.2.0",
     "@canvasjs/charts": "^3.10.7",
-    "@fortawesome/fontawesome-free": "^6.6.0",
     "bootstrap": "^5.3.3",
-    "chart.js": "^4.4.4",
     "moment": "^2.30.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

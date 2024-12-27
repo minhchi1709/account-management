@@ -24,6 +24,6 @@ export const appConfig: ApplicationConfig = {
   provideHttpClient(),
     provideAnimationsAsync(),
     provideMomentDateAdapter(MY_FORMATS),
-    {provide: MAT_DATE_LOCALE, useValue: 'de'},
+    {provide: MAT_DATE_LOCALE, useValue: 'de'}, provideAnimationsAsync(),
   ]
 };
