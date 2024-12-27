@@ -1,5 +1,8 @@
 <div *ngIf="loaded else loading">
-  <app-graph [setTitle]="title" [setVIB]="dataPoints" [setXTitle]="xTitle" [setYTitle]="yTitle"/>
+  <app-graph [title]="title"
+             [vibDataPoints]="dataPoints"
+             [xTitle]="xTitle"
+             [yTitle]="yTitle"/>
   <table class="table table-hover">
     <thead>
     <tr>

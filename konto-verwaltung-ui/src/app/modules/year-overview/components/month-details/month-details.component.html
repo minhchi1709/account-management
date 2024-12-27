@@ -1,5 +1,8 @@
 <div *ngIf="loaded else loading">
-  <app-graph [setTitle]="title" [setVIB]="dataPoints" [setXTitle]="xTitle" [setYTitle]="yTitle"/>
+  <app-graph [title]="title"
+             [vibDataPoints]="dataPoints"
+             [xTitle]="xTitle"
+             [yTitle]="yTitle"/>
 
   <h1 id="current-sum" *ngIf="indexes.length">
     Aktuelle Summe: {{ currentSum.toFixed(2) }} € | {{ this.currencyManagementService.numberInVND(Math.round(currentSum) * rate) }} VND

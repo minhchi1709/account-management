@@ -3,6 +3,7 @@ package vn.diepgia.mchis.konto_verwaltung.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.diepgia.mchis.konto_verwaltung.dto.MonthTotal;
+import vn.diepgia.mchis.konto_verwaltung.dto.YearTotal;
 import vn.diepgia.mchis.konto_verwaltung.entities.Transaction;
 import vn.diepgia.mchis.konto_verwaltung.repositories.TransactionRepository;
 import vn.diepgia.mchis.konto_verwaltung.dto.TransactionRequest;
@@ -19,7 +20,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final SortTransactionByAscendingDateService transactionSorter;
 
-    public List<Transaction> getAllTransactions() {
+    private List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
@@ -82,6 +83,7 @@ public class TransactionService {
 
     public List<Month> getAllMonths(Integer year) {
         return getAllTransactions().stream()
+                .filter(t -> t.getDate().getYear() == year)
                 .map(t -> t.getDate().getMonth())
                 .sorted()
                 .distinct()
@@ -91,12 +93,20 @@ public class TransactionService {
     public List<MonthTotal> getAllMonthTotal(Integer year) {
         return getAllMonths(year)
                 .stream()
-                .map(m -> {
-                    return MonthTotal.builder()
+                .map(m -> MonthTotal.builder()
                             .month(m)
                             .total(getAllTransactionsOfMonth(year, m.getValue()).stream().mapToDouble(Transaction::getValue).sum())
-                            .build();
-                })
+                        .build()
+                )
+                .toList();
+    }
+
+    public List<YearTotal> getAllYearTotals() {
+        return getAllYears().stream()
+                .map(y -> YearTotal.builder()
+                        .year(y)
+                        .total(getAllTransactionsOfYear(y).stream().mapToDouble(Transaction::getValue).sum())
+                        .build())
                 .toList();
     }
 }

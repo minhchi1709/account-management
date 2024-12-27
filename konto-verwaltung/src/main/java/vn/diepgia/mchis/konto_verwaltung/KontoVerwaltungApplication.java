@@ -17,36 +17,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				contact = @Contact(
 						name = "Minh Chi Diep",
 						email = "diepminhchi1617@gmail.com",
-						url = "https://minhchi1709.github.io/mywebsite/index.html"
+						url = "https://minhchi1709.github.io/profile/"
 				),
 				description = "OpenApi documentation for account management",
 				title = "OpenApi specification - Minh Chi Diep",
 				version = "1.0",
-				license = @License(
-						name = "Licence name",
-						url = "https://some-url.com"
-				),
 				termsOfService = "Terms of service"
 		),
 		servers = {
 				@Server(
 						description = "Local ENV",
 						url = "http://localhost:8088"
-				),
-				@Server(
-						description = "PROD ENV",
-						url = "https://aliboucoding.com/course"
 				)
 		}
 )
-/*@SecurityScheme(
-		name = "bearerAuth",
-		description = "JWT auth description",
-		scheme = "bearer",
-		type = SecuritySchemeType.HTTP,
-		bearerFormat = "JWT",
-		in = SecuritySchemeIn.HEADER
-)*/
 public class KontoVerwaltungApplication {
 
 	public static void main(String[] args) {

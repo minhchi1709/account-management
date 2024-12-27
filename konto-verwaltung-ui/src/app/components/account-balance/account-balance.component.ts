@@ -1,21 +1,16 @@
 import { Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../api-services/services/transaction.service";
-import {CreateTransactionComponent} from "../create-transaction/create-transaction.component";
-
 import {NgIf} from "@angular/common";
 import {CurrencyService} from "../../api-services/services/currency.service";
 import {GraphComponent} from "../graph/graph.component";
 import {CurrencyManagementService} from "../../services/currency-service/currency-management.service";
 import {ObserverService} from "../../services/observer/observer.service";
 import {LoaderComponent} from "../loader/loader.component";
-import {firstValueFrom} from "rxjs";
-
 
 @Component({
   selector: 'app-account-balance',
   standalone: true,
   imports: [
-    CreateTransactionComponent,
     NgIf,
     GraphComponent,
     LoaderComponent
@@ -57,31 +52,21 @@ export class AccountBalanceComponent implements OnInit{
     }).subscribe({
       next: val => {
         this.rate = val.rate || 0
-        //setTimeout(() => this.loaded = true, 10)
         this.loaded = true
       }
     })
   }
 
   init() {
-    this.transactionService.getAllYears().subscribe({
+    this.transactionService.getAllYearTotals().subscribe({
       next: val => {
-        for (let y of val.reverse()) {
-          this.transactionService.getAllTransactionsOfYear({
-            year: y
-          }).subscribe({
-            next: transactions => {
-              this.dataPoints.push({
-                label: y,
-                y: this.currencyManagementService.sum(transactions)
-              })
-            }
-          })
-        }
+        this.balance = val.map(t => t.total || 0)
+          .reduce((total, current) => total + current, 0)
+        this.dataPoints = val.map(t => ({
+          y: t.total,
+          label: t.year
+        }))
       }
-    })
-    this.transactionService.getAllTransactions().subscribe({
-      next: val => this.balance = this.currencyManagementService.sum(val)
     })
   }
 

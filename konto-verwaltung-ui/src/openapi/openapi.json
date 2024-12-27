@@ -6,12 +6,8 @@
     "termsOfService": "Terms of service",
     "contact": {
       "name": "Minh Chi Diep",
-      "url": "https://minhchi1709.github.io/mywebsite/index.html",
+      "url": "https://minhchi1709.github.io/profile/",
       "email": "diepminhchi1617@gmail.com"
-    },
-    "license": {
-      "name": "Licence name",
-      "url": "https://some-url.com"
     },
     "version": "1.0"
   },
@@ -19,10 +15,6 @@
     {
       "url": "http://localhost:8088",
       "description": "Local ENV"
-    },
-    {
-      "url": "https://aliboucoding.com/course",
-      "description": "PROD ENV"
     }
   ],
   "paths": {
@@ -131,7 +123,7 @@
         "tags": [
           "Transaction"
         ],
-        "operationId": "getAllTransactions",
+        "operationId": "getAllYearTotals",
         "responses": {
           "200": {
             "description": "OK",
@@ -140,7 +132,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Transaction"
+                    "$ref": "#/components/schemas/YearTotal"
                   }
                 }
               }
@@ -452,6 +444,19 @@
           }
         }
       },
+      "YearTotal": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
       "MonthTotal": {
         "type": "object",
         "properties": {
@@ -487,6 +492,10 @@
           "rate": {
             "type": "number",
             "format": "float"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

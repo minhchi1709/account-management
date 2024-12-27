@@ -1,12 +1,12 @@
 <div *ngIf="loaded else loading">
-  <app-graph [setTitle]="title"
-             [setVIB]="filteredVIBDataPoints"
-             [setPaypal]="filteredPaypalDataPoints"
-             [setVCB]="filteredVCBDataPoints"
-             [setXTitle]="xTitle"
+  <app-graph [title]="title"
+             [vibDataPoints]="filteredVIBDataPoints"
+             [paypalDataPoints]="filteredPaypalDataPoints"
+             [vcbDataPoints]="filteredVCBDataPoints"
+             [xTitle]="xTitle"
              (filteringEvent)="filter($event)"
-             [setCurrency]="true"
-             [setYTitle]="yTitle"/>
+             [currency]="true"
+             [yTitle]="yTitle"/>
 </div>
 
 <ng-template #loading>

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.diepgia.mchis.konto_verwaltung.dto.MonthTotal;
+import vn.diepgia.mchis.konto_verwaltung.dto.YearTotal;
 import vn.diepgia.mchis.konto_verwaltung.entities.Transaction;
 import vn.diepgia.mchis.konto_verwaltung.dto.TransactionRequest;
 import vn.diepgia.mchis.konto_verwaltung.services.TransactionService;
@@ -25,8 +26,8 @@ public class TransactionController {
     private final Logger LOGGER = Logger.getLogger(TransactionController.class.getName());
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
-        return ResponseEntity.ok(transactionService.getAllTransactions());
+    public ResponseEntity<List<YearTotal>> getAllYearTotals() {
+        return ResponseEntity.ok(transactionService.getAllYearTotals());
     }
 
     @PostMapping

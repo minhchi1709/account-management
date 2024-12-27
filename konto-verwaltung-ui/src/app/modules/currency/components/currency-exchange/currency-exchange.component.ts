@@ -73,64 +73,55 @@ export class CurrencyExchangeComponent implements OnInit{
             y: rate.rate
           }
         })
-
-        let temp = this.vcbDataPoints.slice().filter(r1 => {
-          for (let r2 of this.vibDataPoints) {
-            if (r2.id.date == r1.id.date) {
-              return false
-            }
-          }
-          return true
-        })
         this.loaded = true
       }
     })
   }
 
   filter(option: string) {
-
     this.title = this.titles[option]
-    if (option == 'none') {
-      this.filteredPaypalDataPoints = this.paypalDataPoints.map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-      this.filteredVIBDataPoints = this.vibDataPoints.map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-      this.filteredVCBDataPoints = this.vcbDataPoints.map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-    } else {
-      const begin = this.dateService.getDate(option) || new Date()
+    setTimeout(() => {
+      if (option == 'none') {
+        this.filteredPaypalDataPoints = this.paypalDataPoints.map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+        this.filteredVIBDataPoints = this.vibDataPoints.map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+        this.filteredVCBDataPoints = this.vcbDataPoints.map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+      } else {
+        const begin = this.dateService.getDate(option) || new Date()
 
-      this.filteredPaypalDataPoints = this.paypalDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-      this.filteredVIBDataPoints = this.vibDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-      this.filteredVCBDataPoints = this.vcbDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
-        return {
-          label: this.dateService.reformatDate(rate.id.date || ''),
-          y: rate.rate
-        }
-      })
-    }
+        this.filteredPaypalDataPoints = this.paypalDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+        this.filteredVIBDataPoints = this.vibDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+        this.filteredVCBDataPoints = this.vcbDataPoints.slice().filter(p => new Date(p.id.date) >= begin).map(rate => {
+          return {
+            label: this.dateService.reformatDate(rate.id.date || ''),
+            y: rate.rate
+          }
+        })
+      }
+    })
   }
-
 }

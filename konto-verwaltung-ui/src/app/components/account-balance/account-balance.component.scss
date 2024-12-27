@@ -2,7 +2,7 @@
   background-color: #212121;
   margin-bottom: 10rem;
   border-radius: 20px;
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 6px 6px 20px 0 rgba(0, 0, 0, 0.2), -6px -6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-top: 2rem;
   display: flex;
   justify-content: center;
@@ -44,7 +44,7 @@ app-account-balance {
 #container-stars {
   position: absolute;
   z-index: -1;
-  width: 100%;
+  width: 110%;
   height: 100%;
   overflow: hidden;
   transition: 0.5s;
@@ -64,7 +64,7 @@ strong {
 #glow {
   position: absolute;
   display: flex;
-  width: 12rem;
+  width: 13rem;
 }
 
 .circle {
