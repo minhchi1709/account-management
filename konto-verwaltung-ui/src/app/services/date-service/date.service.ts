@@ -69,12 +69,12 @@ export class DateService {
     switch (option) {
       case 'week': {
         if (now.getDate() > 7) {
-          return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)
+          return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6)
         } else {
           if (now.getMonth() > 0) {
-            return new Date(now.getFullYear(), now.getMonth() - 1, this.monthDays[now.getMonth() - 1] + now.getDate() - 7)
+            return new Date(now.getFullYear(), now.getMonth() - 1, this.monthDays[now.getMonth() - 1] + now.getDate() - 6)
           } else {
-            return new Date(now.getFullYear() - 1, 11, 31 + now.getDate() - 7)
+            return new Date(now.getFullYear() - 1, 11, 31 + now.getDate() - 6)
           }
         }
       }

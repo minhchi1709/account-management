@@ -1,14 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {TransactionService} from "../../../../api-services/services/transaction.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink, RouterLinkActive} from "@angular/router";
 import {DateService} from "../../../../services/date-service/date.service";
 
 @Component({
   selector: 'app-navigation-year',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './navigation-year.component.html',
   styleUrl: './navigation-year.component.scss'

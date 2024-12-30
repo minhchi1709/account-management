@@ -1,4 +1,10 @@
-<canvasjs-chart [options]="chartOptions"/>
+<div *ngIf="loaded else loading">
+  <canvasjs-chart [options]="chartOptions"/>
+</div>
+<ng-template #loading>
+  <app-loader/>
+</ng-template>
+
 <div id="container" class="row" *ngIf="currency">
   <div class="col-4" id="poda">
     <div class="glow"></div>
@@ -60,7 +66,7 @@
   <div class="col" id="filter">
     <mat-form-field>
       <mat-label>Anzeigefilter</mat-label>
-      <mat-select #option7>
+      <mat-select value="Innerhalb 7 Tagen">
         <mat-option (click)="filter('none')" value="Kein Filter aktiv">None</mat-option>
         <mat-option (click)="filter('week')" value="Innerhalb 7 Tagen">Innerhalb 7 Tagen</mat-option>
         <mat-option (click)="filter('month')" value="In diesem Monat">In diesem Monat</mat-option>

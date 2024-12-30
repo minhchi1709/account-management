@@ -94,6 +94,4 @@ public class TransactionController {
     ) {
         return ResponseEntity.ok(transactionService.getAllTransactionsOfMonth(year, month));
     }
-
-
 }

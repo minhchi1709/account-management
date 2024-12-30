@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../api-services/services/transaction.service";
 import {NgForOf} from "@angular/common";
-import {RouterLink} from "@angular/router";
-import {AppComponent} from "../../app.component";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 import {CreateTransactionComponent} from "../create-transaction/create-transaction.component";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
@@ -18,7 +17,8 @@ import {ObserverService} from "../../services/observer/observer.service";
     CreateTransactionComponent,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    RouterLinkActive
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'

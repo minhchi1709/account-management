@@ -1,10 +1,10 @@
 <div *ngIf="loaded else loading">
   <app-graph [title]="title"
-             [vibDataPoints]="filteredVIBDataPoints"
-             [paypalDataPoints]="filteredPaypalDataPoints"
-             [vcbDataPoints]="filteredVCBDataPoints"
+             [usingDate]="true"
+             [vibDataPoints]="vibDataPoints"
+             [paypalDataPoints]="paypalDataPoints"
+             [vcbDataPoints]="vcbDataPoints"
              [xTitle]="xTitle"
-             (filteringEvent)="filter($event)"
              [currency]="true"
              [yTitle]="yTitle"/>
 </div>

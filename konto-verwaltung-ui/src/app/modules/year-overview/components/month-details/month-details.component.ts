@@ -1,6 +1,6 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TransactionService} from "../../../../api-services/services/transaction.service";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
 import {CurrencyManagementService} from "../../../../services/currency-service/currency-management.service";
 import {CurrencyService} from "../../../../api-services/services/currency.service";
@@ -11,13 +11,11 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {LoaderComponent} from "../../../../components/loader/loader.component";
 
-
 @Component({
   selector: 'app-month-details',
   standalone: true,
   imports: [
     NgForOf,
-    RouterLink,
     NgIf,
     GraphComponent,
     MatIconModule,
@@ -27,7 +25,7 @@ import {LoaderComponent} from "../../../../components/loader/loader.component";
   templateUrl: './month-details.component.html',
   styleUrl: './month-details.component.scss'
 })
-export class MonthDetailsComponent implements OnInit, OnChanges {
+export class MonthDetailsComponent implements OnInit {
 
   loaded: boolean = false
   rate: number = 1
@@ -52,12 +50,7 @@ export class MonthDetailsComponent implements OnInit, OnChanges {
   ) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-        console.log('change')
-    }
-
   ngOnInit(): void {
-
     this.observer.objectUpdate$.subscribe(object => {
       if (object) {
         this.init()
@@ -71,20 +64,10 @@ export class MonthDetailsComponent implements OnInit, OnChanges {
       }
     })
     this.year = Number(window.location.href.split('/')[4]);
-    this.month = this.router.snapshot.params['month'];
-    this.init()
-
-    setTimeout(() => {
-      let temp = window.location.href.split('/')
-      if (temp.includes('months')) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.classList.remove('active')
-        })
-
-        document.getElementById(String(this.year))?.classList.add('active')
-        document.getElementById(String(this.month))?.classList.add('active')
-      }
-    }, 100)
+    this.router.params.subscribe(params => {
+      this.month = params['month']
+      this.init()
+    })
   }
 
   init() {
@@ -93,22 +76,18 @@ export class MonthDetailsComponent implements OnInit, OnChanges {
       month: this.dateService.getMonthValue(this.month)
     }).subscribe({
       next: res => {
-        this.transactions = res.map(t => {
-          return {
-            transaction: t,
-            included: false
-          }
-        })
+        this.transactions = res.map(t => ({
+          transaction: t,
+          included: false
+        }))
         this.transactions = this.transactions.reverse()
 
         this.sum = this.currencyManagementService.sum(res)
 
-        this.dataPoints = res.map(t => {
-          return {
-            label: this.dateService.reformatDate(t.date || ''),
-            y: t.value
-          }
-        })
+        this.dataPoints = res.map(t => ({
+          label: t.date,
+          y: t.value
+        }))
 
         this.title = `Analyse im ${this.month}`
         this.xTitle = 'Datum'

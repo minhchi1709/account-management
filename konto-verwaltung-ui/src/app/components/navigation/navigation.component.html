@@ -58,8 +58,8 @@
     <a class="nav-link disabled" aria-disabled="true">Jahr auswählen</a>
   </li>
   <li class="nav-item" *ngFor="let year of years">
-    <div class="box">
-      <a class="nav-link nav-nav" id="{{year}}" href="years/{{year}}">{{year }}</a>
+    <div class="box" routerLinkActive="active">
+      <a class="nav-link nav-nav" [routerLink]="['years', year]">{{ year }}</a>
       <div class="space">
         <span style="--i: 31" class="star"></span>
         <span style="--i: 12" class="star"></span>

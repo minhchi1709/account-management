@@ -71,12 +71,10 @@ export class YearDetailsComponent implements OnInit{
     }).subscribe({
       next: value => {
         this.sum = 0
-        this.dataPoints = value.map((mt) => {
-          return {
-            label: this.dateService.getMonthNameDE(this.capitalize(mt.month || '')),
-            y: mt.total
-          }
-        })
+        this.dataPoints = value.map(mt => ({
+          label: this.dateService.getMonthNameDE(this.capitalize(mt.month || '')),
+          y: mt.total
+        }))
         this.months = value.map(mt => this.capitalize(mt.month || ''))
         value.map(mt => {
           return mt.total
