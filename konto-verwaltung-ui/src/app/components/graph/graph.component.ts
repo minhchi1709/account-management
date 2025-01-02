@@ -74,6 +74,7 @@ export class GraphComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.loaded = false
     this.ngOnInit()
   }
 
@@ -84,7 +85,7 @@ export class GraphComponent implements OnInit, OnChanges {
     if (this.currency) this.filter('week')
     else if (this.usingDate) this.init()
     this.prepareData()
-    this.loaded = true
+    setTimeout(() => this.loaded = true)
   }
 
   init() {

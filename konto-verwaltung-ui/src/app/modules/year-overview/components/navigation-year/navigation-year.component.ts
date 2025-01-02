@@ -28,14 +28,16 @@ export class NavigationYearComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.year = this.router.snapshot.params['year'];
-    this.transactionService.getAllMonths({
-      year: this.year
-    }).subscribe({
-      next: res => {
-        this.months = res.map(val => this.capitalize(val))
-      },
-      error: err => console.log(err)
+    this.router.params.subscribe(params => {
+      this.year = params['year']
+      this.transactionService.getAllMonths({
+        year: this.year
+      }).subscribe({
+        next: res => {
+          this.months = res.map(val => this.capitalize(val))
+        },
+        error: err => console.log(err)
+      })
     })
   }
 

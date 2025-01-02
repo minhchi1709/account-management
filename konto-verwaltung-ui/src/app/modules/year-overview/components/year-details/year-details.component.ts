@@ -46,8 +46,6 @@ export class YearDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.year = this.router.snapshot.params['year'];
-    this.init()
     this.observer.objectUpdate$.subscribe(object => {
       if (object) {
         this.init()
@@ -63,6 +61,10 @@ export class YearDetailsComponent implements OnInit{
         this.rate = val.rate || 0
       }
     })
+    this.router.params.subscribe(params => {
+      this.year = params['year']
+      this.init()
+    })
   }
 
   init() {
@@ -76,10 +78,8 @@ export class YearDetailsComponent implements OnInit{
           y: mt.total
         }))
         this.months = value.map(mt => this.capitalize(mt.month || ''))
-        value.map(mt => {
-          return mt.total
-        }).forEach(t => this.sum+= t || 0)
-        this.loaded = true
+        value.map(mt => mt.total).forEach(t => this.sum+= t || 0)
+        setTimeout(() => this.loaded = true)
       }
     })
   }

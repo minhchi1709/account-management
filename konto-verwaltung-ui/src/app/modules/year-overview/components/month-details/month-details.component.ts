@@ -10,6 +10,7 @@ import {ObserverService} from "../../../../services/observer/observer.service";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {LoaderComponent} from "../../../../components/loader/loader.component";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-month-details',
@@ -20,7 +21,8 @@ import {LoaderComponent} from "../../../../components/loader/loader.component";
     GraphComponent,
     MatIconModule,
     MatButtonModule,
-    LoaderComponent
+    LoaderComponent,
+    MatTooltipModule,
   ],
   templateUrl: './month-details.component.html',
   styleUrl: './month-details.component.scss'
@@ -93,7 +95,7 @@ export class MonthDetailsComponent implements OnInit {
         this.xTitle = 'Datum'
         this.yTitle = '€'
 
-        setTimeout(() => this.loaded = true, 200)
+        setTimeout(() => this.loaded = true)
       },
       error: err => console.log(err)
     })

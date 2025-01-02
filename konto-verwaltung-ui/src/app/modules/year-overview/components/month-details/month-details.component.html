@@ -26,6 +26,8 @@
       <td>{{ transactions[i].transaction.description }}</td>
       <td>
         <button mat-mini-fab
+                matTooltip="Verarbeiten"
+                matTooltipPosition="left"
                 data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop"
                 (click)="editTransaction(transactions[i])"
@@ -35,17 +37,28 @@
       </td>
       <td>
         <button mat-mini-fab
+                matTooltip="Löschen"
+                matTooltipPosition="left"
                 (click)="deleteTransaction(transactions[i])"
                 color="warn">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
       <td>
-        <button mat-mini-fab color="basic" *ngIf="!transactions[i].included else included" (click)="addToSum(i)">
+        <button mat-mini-fab
+                color="basic"
+                matTooltip="Zur Summe hinzufügen"
+                matTooltipPosition="left"
+                *ngIf="!transactions[i].included else included"
+                (click)="addToSum(i)">
           <mat-icon>add</mat-icon>
         </button>
         <ng-template #included>
-          <button mat-mini-fab color="warn" (click)="removeFromSum(i)">
+          <button mat-mini-fab
+                  matTooltip="Aus Summe Entfernen"
+                  matTooltipPosition="left"
+                  color="warn"
+                  (click)="removeFromSum(i)">
             <mat-icon>remove</mat-icon>
           </button>
         </ng-template>
