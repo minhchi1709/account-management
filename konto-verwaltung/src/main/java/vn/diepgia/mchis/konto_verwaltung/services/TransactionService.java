@@ -20,7 +20,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final SortTransactionByAscendingDateService transactionSorter;
 
-    private List<Transaction> getAllTransactions() {
+    public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 

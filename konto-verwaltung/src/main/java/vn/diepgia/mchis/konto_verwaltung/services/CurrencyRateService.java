@@ -134,7 +134,6 @@ public class CurrencyRateService {
     }
 
     private List<CurrencyExchangeRate> getAllRates(String bank) {
-        foo();
         try {
             getTodayRate(bank);
         } catch(Exception e) {
@@ -145,21 +144,5 @@ public class CurrencyRateService {
                 .filter(r -> r.getId().getBank() == getBank(bank))
                 .sorted(sorter)
                 .toList();
-    }
-
-    private void foo() {
-        float[] rates = new float[]{26258.91f, 26329.37f, 26360.15f, 26360.15f, 26360.15f, 26287.37f, 26213.93f, 26244.27f, 26279.26f};
-        LocalDate date =  LocalDate.of(2024, 11, 27);
-        for (float rate: rates) {
-            repository.save(
-                    CurrencyExchangeRate
-                            .builder()
-                            .id(CurrencyExchangeRateId.builder().bank(BankName.VCB).date(date).build())
-                            .rate(rate)
-                            .lastUpdated(LocalDateTime.now())
-                            .build()
-            );
-            date = date.plusDays(1);
-        }
     }
 }
